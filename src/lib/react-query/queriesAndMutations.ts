@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
-import { createPost, createUserAccount, getRecentPosts, signInAccount, signOutAccount } from '../appwrite/api';
+import { createPost, createUserAccount, deleteSavedPost, getCurrentUser, getRecentPosts, likePost, savePost, signInAccount, signOutAccount } from '../appwrite/api';
 import { INewUser, INewPost } from '@/types';
 
 import { QUERY_KEYS } from "@/lib/react-query/QueryKeys";
@@ -38,5 +38,72 @@ export const useGetRecentPosts = () => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
     queryFn: getRecentPosts
+  })
+}
+
+export const useLikePost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ postId, likesArray }: {postId: string; likesArray: string[]}) => likePost(postId, likesArray),
+    onSuccess: (data) => {
+      QueryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_POST_BY_ID, data?.id]
+      })
+      QueryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_RECENT_POSTS]
+      })
+      QueryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_POSTS]
+      })
+      QueryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_CURRENT_USER]
+      })
+    }
+  })
+}
+
+export const useSavePost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ userId, postId }: {postId: string; userId: string}) => savePost(userId, postId),
+    onSuccess: (data) => {
+      QueryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_RECENT_POSTS]
+      })
+      QueryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_POSTS]
+      })
+      QueryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_CURRENT_USER]
+      })
+    }
+  })
+}
+
+export const useDeleteSavedPost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (savedRecordId: string)  => deleteSavedPost(savedRecordId),
+    onSuccess: (data) => {
+      QueryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_RECENT_POSTS]
+      })
+      QueryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_POSTS]
+      })
+      QueryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_CURRENT_USER]
+      })
+    }
+  })
+}
+
+export const useGetCurrentUser = () => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_CURRENT_USER],
+    queryFn: getCurrentUser
   })
 }

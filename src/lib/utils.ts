@@ -32,3 +32,7 @@ export function timeAgo(dateString: string) {
   }
   return Math.floor(seconds) + " second(s) ago";
 }
+
+export const checkIsLiked = (likeList: string[], userId: string) => {
+    return likeList.includes(userId);
+  };
