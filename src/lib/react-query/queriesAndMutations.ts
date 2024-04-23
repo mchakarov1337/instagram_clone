@@ -47,16 +47,16 @@ export const useLikePost = () => {
   return useMutation({
     mutationFn: ({ postId, likesArray }: {postId: string; likesArray: string[]}) => likePost(postId, likesArray),
     onSuccess: (data) => {
-      QueryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_POST_BY_ID, data?.id]
       })
-      QueryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_RECENT_POSTS]
       })
-      QueryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_POSTS]
       })
-      QueryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_CURRENT_USER]
       })
     }
@@ -69,13 +69,13 @@ export const useSavePost = () => {
   return useMutation({
     mutationFn: ({ userId, postId }: {postId: string; userId: string}) => savePost(userId, postId),
     onSuccess: (data) => {
-      QueryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_RECENT_POSTS]
       })
-      QueryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_POSTS]
       })
-      QueryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_CURRENT_USER]
       })
     }
@@ -88,13 +88,13 @@ export const useDeleteSavedPost = () => {
   return useMutation({
     mutationFn: (savedRecordId: string)  => deleteSavedPost(savedRecordId),
     onSuccess: (data) => {
-      QueryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_RECENT_POSTS]
       })
-      QueryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_POSTS]
       })
-      QueryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_CURRENT_USER]
       })
     }

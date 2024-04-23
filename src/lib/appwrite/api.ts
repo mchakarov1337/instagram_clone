@@ -1,4 +1,4 @@
-import { INewUser, IUpdatePost } from "@/types";
+import { INewUser, IUpdatePost, INewPost } from "@/types";
 import { ID, Query } from "appwrite";
 import { account, appwriteConfig, avatars, databases, storage } from "./config";
 
@@ -38,7 +38,7 @@ export async function saveUserToDb(user: {
   accountId: string;
   email: string;
   name: string;
-  imageUrl: Url;
+  imageUrl: URL;
   username?: string;
 }) {
   try {

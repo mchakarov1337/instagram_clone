@@ -7,7 +7,7 @@ type FileUploaderType = {
   mediaUrl: string;
 }
 
-const FileUploader = ({fieldChange, mediaUrl}: FileUploaderTypes) => {
+const FileUploader = ({fieldChange, mediaUrl}: FileUploaderType) => {
   const [file, setFile] = useState<File[]>([]);
   const [fileUrl, setFileUrl] = useState(mediaUrl);
 
