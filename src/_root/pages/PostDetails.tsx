@@ -4,14 +4,17 @@ import { useUserContext } from "@/context/AuthContext";
 import { useGetPostById, useDeletePost } from "@/lib/react-query/queriesAndMutations";
 import { timeAgo } from "@/lib/utils";
 import { Loader } from "lucide-react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 
 const PostDetails = () => {
+
   const { id } = useParams();
   const { data: post, isPending } = useGetPostById(id);
   const { user } = useUserContext();
 
   const { mutate: deletePost } = useDeletePost();
+
+  const  navigate = useNavigate();
 
   const handleDeletePost = () => {
     deletePost({ postId: id, imageId: post?.imageId });
