@@ -1,25 +1,28 @@
-import { useQuery, useMutation, useQueryClient, useInfiniteQuery, MutateFunction, QueryObserverResult } from '@tanstack/react-query';
+import { useQuery, useMutation, UseMutationResult,  useQueryClient, useInfiniteQuery, MutateFunction, QueryObserverResult } from '@tanstack/react-query';
 import { createPost, createUserAccount, deletePost, deleteSavedPost, getCurrentUser, getInfinitePosts, getPostById, getRecentPosts, getUserById, getUsers, likePost, savePost, searchPosts, signInAccount, signOutAccount, updatePost, updateUser } from '../appwrite/api';
 import { INewUser, INewPost, IUpdatePost, IUpdateUser } from '@/types';
 
 import { QUERY_KEYS } from "@/lib/react-query/QueryKeys";
 
 interface CreateUserMutationResult {
-  mutate: MutateFunction<unknown, INewUser, unknown>;
+  mutate: MutationFunction<unknown, INewUser, unknown>;
   mutateAsync: (variables: INewUser) => Promise<unknown>;
-  isPending: boolean; 
+  isPending: boolean;
   isError: boolean;
 }
 
 export const useCreateUserAccount = (): CreateUserMutationResult => {
-  const [mutate, { isLoading: isPending, isError }] = useMutation<unknown, unknown, INewUser, unknown>(createUserAccount);
+  const [mutate, { isLoading: isPending, isError }] = useMutation<unknown, unknown, INewUser, unknown>(
+    createUserAccount
+  );
 
   const mutateAsync = async (variables: INewUser) => {
     return await mutate(variables);
   };
 
   return { mutate, mutateAsync, isPending, isError };
-}
+};
+
 export const useSignInAccount = () => {
   return useMutation({
     mutationFn: (user: {email: string, password: string}) => signInAccount(user)
