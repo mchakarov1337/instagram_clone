@@ -5,14 +5,14 @@ import { INewUser, INewPost, IUpdatePost, IUpdateUser } from '@/types';
 import { QUERY_KEYS } from "@/lib/react-query/QueryKeys";
 
 interface CreateUserMutationResult {
-  mutate: MutationFunction<any, INewUser, any>;
+  mutate: MutationFunction<any, INewUser>;
   mutateAsync: (variables: INewUser) => Promise<any>;
   isPending: boolean;
   isError: boolean;
 }
 
 export const useCreateUserAccount = (): CreateUserMutationResult => {
-  const [mutate, { isLoading: isPending, isError }] = useMutation<any, unknown, INewUser, unknown>(
+  const [mutate, { isLoading: isPending, isError }] = useMutation<any, unknown, INewUser>(
     createUserAccount
   );
 
