@@ -129,13 +129,13 @@ export const useGetCurrentUser = () => {
   })
 }
 
-interface GetPostByIdResult extends UseQueryResult<unknown, boolean> {
-  data: unknown;
+interface GetPostByIdResult extends UseQueryResult<Object, boolean> {
+  data: {};
   isPending: boolean;
 }
 
 export const useGetPostById = (postId?: string): GetPostByIdResult => {
-  const queryResult: UseQueryResult<unknown, boolean> = useQuery({
+  const queryResult: UseQueryResult<Object, boolean> = useQuery({
     queryKey: [QUERY_KEYS.GET_POST_BY_ID, postId],
     queryFn: () => getPostById(postId),
     enabled: !!postId,
