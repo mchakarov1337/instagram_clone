@@ -35,7 +35,7 @@ export const useSignOutAccount = () => {
 
 export const useCreatePost = () => {
   const queryClient = useQueryClient();
-  return useMutation({
+  const mutationResult =  useMutation({
     mutationFn: (post: INewPost) => createPost(post),
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -43,13 +43,20 @@ export const useCreatePost = () => {
       });
     },
   });
+
+  return {...mutationResult, isPending: mutationResult.isLoading};
 };
 
 export const useGetRecentPosts = () => {
-  return useQuery({
+  const queryResult =  useQuery({
     queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
     queryFn: getRecentPosts
-  })
+  });
+
+  return {
+    ...queryResult,
+    isPending: queryResult.isLoading,
+  };
 }
 
 export const useLikePost = () => {
@@ -119,11 +126,6 @@ export const useGetCurrentUser = () => {
   })
 }
 
-interface usePostById {
-  data: unknown;
-  isPending: boolean;
-}
-
 export const useGetPostById = (postId: string) => {
   const queryResult = useQuery({
     queryKey: [QUERY_KEYS.GET_POST_BY_ID, postId],
@@ -140,7 +142,7 @@ export const useGetPostById = (postId: string) => {
 export const useUpdatePost = () => {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  const mutationResult =  useMutation({
     mutationFn: (post: IUpdatePost) => updatePost(post),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
@@ -148,6 +150,11 @@ export const useUpdatePost = () => {
       });
     }
   });
+
+  return {
+    ...mutationResult,
+    isPending: queryResult.isLoading,
+  };
 };
 
 export const useDeletePost = () => {
