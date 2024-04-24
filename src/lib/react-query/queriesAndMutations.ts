@@ -15,14 +15,8 @@ export const useCreateUserAccount = (): CreateUserAccountResult => {
 
   const isCreatingAccount = mutation.status === MutationStatus.Loading;
 
-  // Handling the different states of the mutation result
-  if ('isIdle' in mutation) {
-    // Mutation result is defined
-    return { ...mutation, isCreatingAccount };
-  } else {
-    // Mutation result is not yet defined
-    return { isCreatingAccount } as CreateUserAccountResult;
-  }
+  // Type assertion to explicitly define the return type
+  return { ...(mutation as CreateUserAccountResult), isCreatingAccount };
 };
 
 export const useSignInAccount = () => {
