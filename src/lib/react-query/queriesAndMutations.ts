@@ -1,23 +1,14 @@
-import { useQuery, useMutation, useQueryClient, useInfiniteQuery, MutationStatus, UseMutateAsyncFunction, UseMutationResult } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import { createPost, createUserAccount, deletePost, deleteSavedPost, getCurrentUser, getInfinitePosts, getPostById, getRecentPosts, getUserById, getUsers, likePost, savePost, searchPosts, signInAccount, signOutAccount, updatePost, updateUser } from '../appwrite/api';
 import { INewUser, INewPost, IUpdatePost, IUpdateUser } from '@/types';
 
 import { QUERY_KEYS } from "@/lib/react-query/QueryKeys";
 
-interface CreateUserAccountResult extends UseMutationResult<any, unknown, INewUser, unknown> {
-  isCreatingAccount: boolean;
-}
-
-export const useCreateUserAccount = (): CreateUserAccountResult => {
-  const mutation = useMutation({
+export const useCreateUserAccount = () => {
+  return useMutation({
     mutationFn: (user: INewUser) => createUserAccount(user)
-  });
-
-  const isCreatingAccount = mutation.status === MutationStatus.Loading;
-
-  // Type assertion to explicitly define the return type
-  return { ...(mutation as CreateUserAccountResult), isCreatingAccount };
-};
+  })
+}
 
 export const useSignInAccount = () => {
   return useMutation({
