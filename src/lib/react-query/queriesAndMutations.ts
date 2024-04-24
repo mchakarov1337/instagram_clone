@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient, useInfiniteQuery, MutateFunction } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, useInfiniteQuery, MutateFunction, QueryObserverResult  } from '@tanstack/react-query';
 import { createPost, createUserAccount, deletePost, deleteSavedPost, getCurrentUser, getInfinitePosts, getPostById, getRecentPosts, getUserById, getUsers, likePost, savePost, searchPosts, signInAccount, signOutAccount, updatePost, updateUser } from '../appwrite/api';
 import { INewUser, INewPost, IUpdatePost, IUpdateUser } from '@/types';
 
@@ -6,15 +6,14 @@ import { QUERY_KEYS } from "@/lib/react-query/QueryKeys";
 
 interface CreateUserMutationResult {
   mutate: MutationFunction<unknown, INewUser, unknown>;
-  mutateAsync: (variables: INewUser) => Promise<unknown>; // Adding mutateAsync property
-  isPending: boolean; // Adding isPending property
+  mutateAsync: (variables: INewUser) => Promise<unknown>;
+  isPending: boolean; 
   isError: boolean;
 }
 
 export const useCreateUserAccount = (): CreateUserMutationResult => {
   const [mutate, { isLoading: isPending, isError }] = useMutation(createUserAccount);
 
-  // Define a new async function that calls mutate
   const mutateAsync = async (variables: INewUser) => {
     return await mutate(variables);
   };
@@ -179,11 +178,22 @@ export const useSearchPosts = (searchTerm: string) => {
   })
 }
 
-export const useGetUsers = (limit?: number) => {
-  return useQuery({
+interface GetUsersResult {
+  data: unknown;
+  isPending: boolean;
+  isError: boolean;
+}
+
+export const useGetUsers = (limit?: number): GetUsersResult => {
+  const result: QueryObserverResult<unknown, unknown> = useQuery({
     queryKey: [QUERY_KEYS.GET_USERS],
     queryFn: () => getUsers(limit),
   });
+
+  const isPending: boolean = result.status === 'loading';
+  const isError: boolean = result.status === 'error';
+
+  return { data: result.data, isPending, isError };
 };
 
 export const useGetUserById = (userId: string) => {
