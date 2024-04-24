@@ -131,7 +131,10 @@ export const useGetPostById = (postId: string) => {
     enabled: !!postId,
   });
 
-  return {...queryResult, queryResult.isLoading };
+  return {
+    ...queryResult,
+    isPending: queryResult.isLoading,
+  };
 };
 
 export const useUpdatePost = () => {
