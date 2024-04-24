@@ -45,22 +45,12 @@ export const useCreatePost = () => {
   });
 };
 
-interface GetRecentPostsResult extends UseQueryResult<DocumentList<Document>, unknown> {
-  data: unknown;
-  isPending: boolean;
-}
-
-export const useGetRecentPosts = (): GetRecentPostsResult => {
-  const queryResult: UseQueryResult<DocumentList<Document>, unknown> = useQuery({
+export const useGetRecentPosts = () => {
+  return useQuery({
     queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
-    queryFn: getRecentPosts,
-  });
-
-  return {
-    ...queryResult,
-    isPending: queryResult.status === 'loading',
-  };
-};
+    queryFn: getRecentPosts
+  })
+}
 
 export const useLikePost = () => {
   const queryClient = useQueryClient();
@@ -129,35 +119,13 @@ export const useGetCurrentUser = () => {
   })
 }
 
-interface PostData {
-  $collectionId: string;
-  $createdAt: string;
-  $databaseId: string;
-  $id: string;
-  $permissions: string[];
-  $updatedAt: string;
-  caption: string;
-  creator: {
-    name: string;
-    username: string;
-    accountId: string;
-    email: string;
-    bio: string | null;
-  };
-  imageId: string;
-  imageUrl: string;
-  likes: any[];
-  location: string;
-  save: any[];
-  tags: string[];
-}
-
-interface GetPostByIdResult extends UseQueryResult<PostData | undefined, boolean> {
+interface GetPostByIdResult extends UseQueryResult<unknown, boolean> {
+  data: unknown;
   isPending: boolean;
 }
 
 export const useGetPostById = (postId?: string): GetPostByIdResult => {
-  const queryResult: UseQueryResult<PostData | undefined, boolean> = useQuery({
+  const queryResult: UseQueryResult<unknown, boolean> = useQuery({
     queryKey: [QUERY_KEYS.GET_POST_BY_ID, postId],
     queryFn: () => getPostById(postId),
     enabled: !!postId,
