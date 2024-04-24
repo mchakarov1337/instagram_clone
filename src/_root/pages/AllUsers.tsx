@@ -21,7 +21,7 @@ const AllUsers = () => {
         <Loader />
       ) : (
         <ul className="user-grid">
-            {Array.isArray(creators?.documents) && creators?.documents.map((creator: any) => (
+            {creators && typeof creators === 'object' && 'documents' in creators && Array.isArray(creators.documents) && creators.documents.map((creator: any) => (
               <li key={creator?.$id} className="flex-1 min-w-[200px] w-full  ">
                 <UserCard user={creator} />
               </li>
