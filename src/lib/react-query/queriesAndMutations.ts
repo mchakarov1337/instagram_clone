@@ -46,6 +46,7 @@ export const useCreatePost = () => {
 };
 
 interface GetRecentPostsResult extends UseQueryResult<DocumentList<Document>, unknown> {
+  data: unknown;
   isPending: boolean;
 }
 
