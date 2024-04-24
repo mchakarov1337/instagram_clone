@@ -1,8 +1,12 @@
-import { useQuery, useMutation, useQueryClient, useInfiniteQuery, MutationStatus } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, useInfiniteQuery, MutationStatus, UseMutateAsyncFunction, UseMutationResult } from '@tanstack/react-query';
 import { createPost, createUserAccount, deletePost, deleteSavedPost, getCurrentUser, getInfinitePosts, getPostById, getRecentPosts, getUserById, getUsers, likePost, savePost, searchPosts, signInAccount, signOutAccount, updatePost, updateUser } from '../appwrite/api';
 import { INewUser, INewPost, IUpdatePost, IUpdateUser } from '@/types';
 
 import { QUERY_KEYS } from "@/lib/react-query/QueryKeys";
+
+interface CreateUserAccountResult extends UseMutationResult<any, unknown, INewUser, unknown> {
+  isCreatingAccount: boolean;
+}
 
 export const useCreateUserAccount = () => {
   const mutation = useMutation({
