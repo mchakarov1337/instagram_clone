@@ -8,15 +8,21 @@ interface CreateUserAccountResult extends UseMutationResult<any, unknown, INewUs
   isCreatingAccount: boolean;
 }
 
-export const useCreateUserAccount = () => {
+export const useCreateUserAccount = (): CreateUserAccountResult => {
   const mutation = useMutation({
     mutationFn: (user: INewUser) => createUserAccount(user)
   });
 
-  // Custom property to reflect the loading state
   const isCreatingAccount = mutation.status === MutationStatus.Loading;
 
-  return { ...mutation, isCreatingAccount };
+  // Handling the different states of the mutation result
+  if ('isIdle' in mutation) {
+    // Mutation result is defined
+    return { ...mutation, isCreatingAccount };
+  } else {
+    // Mutation result is not yet defined
+    return { isCreatingAccount } as CreateUserAccountResult;
+  }
 };
 
 export const useSignInAccount = () => {
