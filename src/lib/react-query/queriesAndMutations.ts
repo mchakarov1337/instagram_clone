@@ -1,14 +1,19 @@
-import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, useInfiniteQuery, MutationStatus } from '@tanstack/react-query';
 import { createPost, createUserAccount, deletePost, deleteSavedPost, getCurrentUser, getInfinitePosts, getPostById, getRecentPosts, getUserById, getUsers, likePost, savePost, searchPosts, signInAccount, signOutAccount, updatePost, updateUser } from '../appwrite/api';
 import { INewUser, INewPost, IUpdatePost, IUpdateUser } from '@/types';
 
 import { QUERY_KEYS } from "@/lib/react-query/QueryKeys";
 
 export const useCreateUserAccount = () => {
-  return useMutation({
+  const mutation = useMutation({
     mutationFn: (user: INewUser) => createUserAccount(user)
-  })
-}
+  });
+
+  // Custom property to reflect the loading state
+  const isCreatingAccount = mutation.status === MutationStatus.Loading;
+
+  return { ...mutation, isCreatingAccount };
+};
 
 export const useSignInAccount = () => {
   return useMutation({
