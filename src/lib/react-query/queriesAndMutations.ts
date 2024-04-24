@@ -12,7 +12,7 @@ interface CreateUserMutationResult {
 }
 
 export const useCreateUserAccount = (): CreateUserMutationResult => {
-  const [mutate, { isLoading: isPending, isError }] = useMutation(createUserAccount);
+  const [mutate, { isLoading: isPending, isError }] = useMutation<unknown, unknown, INewUser, unknown>(createUserAccount);
 
   const mutateAsync = async (variables: INewUser) => {
     return await mutate(variables);
@@ -20,7 +20,6 @@ export const useCreateUserAccount = (): CreateUserMutationResult => {
 
   return { mutate, mutateAsync, isPending, isError };
 }
-
 export const useSignInAccount = () => {
   return useMutation({
     mutationFn: (user: {email: string, password: string}) => signInAccount(user)
