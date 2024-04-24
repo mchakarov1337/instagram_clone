@@ -129,13 +129,35 @@ export const useGetCurrentUser = () => {
   })
 }
 
-interface GetPostByIdResult extends UseQueryResult<Object, boolean> {
-  data: {};
+interface PostData {
+  $collectionId: string;
+  $createdAt: string;
+  $databaseId: string;
+  $id: string;
+  $permissions: string[];
+  $updatedAt: string;
+  caption: string;
+  creator: {
+    name: string;
+    username: string;
+    accountId: string;
+    email: string;
+    bio: string | null;
+  };
+  imageId: string;
+  imageUrl: string;
+  likes: any[];
+  location: string;
+  save: any[];
+  tags: string[];
+}
+
+interface GetPostByIdResult extends UseQueryResult<PostData | undefined, boolean> {
   isPending: boolean;
 }
 
 export const useGetPostById = (postId?: string): GetPostByIdResult => {
-  const queryResult: UseQueryResult<Object, boolean> = useQuery({
+  const queryResult: UseQueryResult<PostData | undefined, boolean> = useQuery({
     queryKey: [QUERY_KEYS.GET_POST_BY_ID, postId],
     queryFn: () => getPostById(postId),
     enabled: !!postId,
