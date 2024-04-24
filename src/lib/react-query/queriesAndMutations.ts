@@ -119,12 +119,19 @@ export const useGetCurrentUser = () => {
   })
 }
 
+interface usePostById {
+  data: unknown;
+  isPending: boolean;
+}
+
 export const useGetPostById = (postId: string) => {
-  return useQuery({
+  const queryResult = useQuery({
     queryKey: [QUERY_KEYS.GET_POST_BY_ID, postId],
     queryFn: () => getPostById(postId),
     enabled: !!postId,
   });
+
+  return {...queryResult, queryResult.isLoading };
 };
 
 export const useUpdatePost = () => {
