@@ -1,11 +1,11 @@
-import { useQuery, useMutation, useQueryClient, useInfiniteQuery, MutateFunction, QueryObserverResult  } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, useInfiniteQuery, MutateFunction, QueryObserverResult, UseQueryResult  } from '@tanstack/react-query';
 import { createPost, createUserAccount, deletePost, deleteSavedPost, getCurrentUser, getInfinitePosts, getPostById, getRecentPosts, getUserById, getUsers, likePost, savePost, searchPosts, signInAccount, signOutAccount, updatePost, updateUser } from '../appwrite/api';
 import { INewUser, INewPost, IUpdatePost, IUpdateUser } from '@/types';
 
 import { QUERY_KEYS } from "@/lib/react-query/QueryKeys";
 
 interface CreateUserMutationResult {
-  mutate: MutationFunction<unknown, INewUser, unknown>;
+  mutate: MutateFunction<unknown, INewUser, unknown>;
   mutateAsync: (variables: INewUser) => Promise<unknown>;
   isPending: boolean; 
   isError: boolean;
@@ -119,12 +119,23 @@ export const useGetCurrentUser = () => {
   })
 }
 
-export const useGetPostById = (postId?: string) => {
-  return useQuery({
+interface GetPostByIdResult extends UseQueryResult<unknown, unknown> {
+  data: unknown;
+  isPending: boolean;
+}
+
+export const useGetPostById = (postId?: string): GetPostByIdResult => {
+  const queryResult: UseQueryResult<unknown, unknown> = useQuery({
     queryKey: [QUERY_KEYS.GET_POST_BY_ID, postId],
     queryFn: () => getPostById(postId),
     enabled: !!postId,
   });
+
+  return {
+    ...queryResult,
+    isPending: queryResult.status === 'loading',
+    data: queryResult.data,
+  };
 };
 
 export const useUpdatePost = () => {
