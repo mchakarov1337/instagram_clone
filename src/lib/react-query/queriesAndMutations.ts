@@ -153,7 +153,7 @@ export const useUpdatePost = () => {
 
   return {
     ...mutationResult,
-    isPending: queryResult.isLoading,
+    isPending: mutationResult.isLoading,
   };
 };
 
