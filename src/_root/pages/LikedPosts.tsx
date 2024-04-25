@@ -14,12 +14,13 @@ const LikedPosts = () => {
 
   return (
     <>
-      {currentUser.liked.length === 0 && (
-        <p className="text-light-4">No liked posts</p>
-      )}
       <div className="explore-container">
       <h2 className="h3-bold md:h2-bold w-full">Liked Posts</h2>
-       <GridPostList posts={currentUser.liked} showStats={false} />
+       {currentUser.liked.length === 0 ? (
+        <p className="text-light-4">No liked posts</p>
+      ) : (
+        <GridPostList posts={currentUser.liked} showStats={false} />
+      )}
       </div>
     </>
   );
